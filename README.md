@@ -38,3 +38,17 @@
 -	Живая демонстрация работы системы
 -	Обработка тестовых примеров
 -	API/UI интерфейс (если имеется)
+
+
+Create new migration
+npm run migration:create -w backend -- --name=init
+
+Install deps
+npm i @jsonwebtoken -w backend
+
+Ссылка на схему БД
+https://drive.google.com/file/d/1yrq1AJPFIdkambZV348jaQPAOAH14_bg/view?usp=sharing
+
+docker-compose -f docker-compose.dev.yml up -d
+
+npm run start -- --watch --entryFile repl
