@@ -15,7 +15,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lib:dev": "npm run dev -w lib",
+    "back:dev": "npm run start:dev -w backend",
+    "front:dev": "npm run dev -w frontend"
   },
   "workspaces": [
     "frontend",
