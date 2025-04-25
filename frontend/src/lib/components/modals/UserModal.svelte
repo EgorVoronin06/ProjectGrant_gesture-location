@@ -1,14 +1,17 @@
 <script>
 	import { fade, slide } from 'svelte/transition';
 	import NCIconSvg from '../general/NCIconSvg.svelte';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
-	const dispatch = createEventDispatcher();
+	let props = $props();
+
+	// const dispatch = createEventDispatcher();
 
 	// export let idOpenModal = false;
 
 	function onClose() {
-		dispatch('close');
+		// dispatch('close');
+		props.close();
 	}
 
 	onMount(() => {
@@ -21,8 +24,8 @@
 </script>
 
 <div class="shadow" transition:fade={{ duration: 150 }}>
-	<div class="modal {$$props.class}">
-		<button class="modal__btn" on:click={onClose}>
+	<div class="modal {props.class}">
+		<button class="modal__btn" onclick={onClose}>
 			<NCIconSvg iconId="close-cross" width={33} height={33} />
 		</button>
 		<slot />

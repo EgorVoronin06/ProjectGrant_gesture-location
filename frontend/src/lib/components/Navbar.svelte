@@ -4,28 +4,29 @@
 	import { goto } from '$app/navigation';
 	import { user } from '../stores/authStore';
 	import { categoriesStore } from '$lib/stores/categoryStore';
-	import Cart from './orders/Cart.svelte';
-	import Icon from './general/Icon.svelte';
-	import { orderPrice } from '../stores/orderStore';
-	import { page } from '$app/stores';
+	import Icon from '$lib/components/general/NCIconSvg.svelte';
+	import { page } from '$app/state';
 
-	$: categories = $categoriesStore;
+	let props = $props();
 
-	const dispatch = createEventDispatcher();
+	// $: categories = $categoriesStore;
+	let categories = $state($categoriesStore);
+
+	// const dispatch = createEventDispatcher();
 	let navbar: HTMLElement;
-	let showCart = false;
-	let isAdmin = false;
+	let showCart = $state(false);
+	let isAdmin = $state(false);
 
-	$: isAdminPage = $page.url.pathname.startsWith('/admin');
-	$: isAdminPage ? (isAdmin = true) : (isAdmin = false);
+	let isAdminPage = $derived(page.url.pathname.startsWith('/admin'));
+
+	$effect(() => {
+		isAdmin = isAdminPage;
+	});
 
 	onMount(() => {
-		page.subscribe(() => {
-			showCart = false;
-		});
 		window.addEventListener(
 			'scroll',
-			(event) => {
+			() => {
 				navbar.classList.toggle('navbar--sticky', window.scrollY > 0);
 			},
 			{
@@ -34,8 +35,9 @@
 		);
 	});
 
-	let btnText: string;
-	$: {
+	let btnText: string = $state('');
+
+	$effect(() => {
 		if ($user === undefined) {
 			btnText = 'Войти';
 		}
@@ -45,11 +47,11 @@
 		if ($user?.role === 'user') {
 			btnText = 'Профиль';
 		}
-	}
+	});
 
 	function onLoginClick() {
 		if ($user === undefined) {
-			dispatch('auth');
+			props.auth();
 			return;
 		}
 		if ($user.role === 'admin' || $user.role === 'staff') {
@@ -80,40 +82,23 @@
 					</span>
 				</div>
 			</div>
-			<Button class="ml-auto" size="medium" on:click={onLoginClick}
+			<Button class="ml-auto" size="medium" onclick={onLoginClick}
 				><span class="button_text-hidden">{btnText}</span>
 				<span class="button_icon-hidden">
 					<Icon iconId="user" />
 				</span>
 			</Button>
-			{#if $page.url.pathname !== '/order'}
-				<div class="relative button_adaptive">
-					<Button class="z-10" size="medium" color="black" on:click={() => (showCart = !showCart)}>
-						<Icon iconId="bag" fill="primary" />
-						{#if $orderPrice > 0}
-							<span class="font-bold">
-								{$orderPrice}₽
-							</span>
-						{:else}
-							Корзина
-						{/if}
-					</Button>
-					{#if showCart}
-						<Cart clickOutsideHandler={() => (showCart = !showCart)} />
-					{/if}
-				</div>
-			{/if}
 		</div>
 		<div class="navbar__bottom" class:navbar__bottom_hidden={isAdmin}>
 			<ul class="navbar__list">
 				<li class="navbar__item link_dark" data-sveltekit-preload-data="false">
 					<a href="#combos">Комбо</a>
 				</li>
-				{#each categories as category}
+				<!-- {#each categories as category}
 					<li class="navbar__item link_dark" data-sveltekit-preload-data="false">
 						<a href={'#category' + category.id}>{category.name}</a>
 					</li>
-				{/each}
+				{/each} -->
 			</ul>
 		</div>
 	</div>
@@ -147,7 +132,7 @@
 				height: 100%;
 			}
 
-			@screen laptop {
+			@media laptop {
 				margin-right: 40px;
 				height: unset;
 			}
@@ -155,7 +140,7 @@
 
 		&__info {
 			display: none;
-			@screen laptop {
+			@media laptop {
 				display: block;
 			}
 		}
@@ -204,7 +189,7 @@
 			font-size: 14px;
 			font-weight: 600;
 
-			@screen laptop {
+			@media laptop {
 				font-size: 16px;
 				grid-gap: 30px;
 			}
@@ -213,13 +198,13 @@
 
 	.button_text-hidden {
 		display: none;
-		@screen laptop {
+		@media laptop {
 			display: unset;
 		}
 	}
 
 	.button_icon-hidden {
-		@screen laptop {
+		@media laptop {
 			display: none;
 		}
 	}
@@ -229,7 +214,7 @@
 		bottom: 15px;
 		right: 15px;
 		z-index: 3;
-		@screen laptop {
+		@media laptop {
 			position: relative;
 			bottom: unset;
 			right: unset;

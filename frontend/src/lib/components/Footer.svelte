@@ -1,18 +1,16 @@
 <script lang="ts">
-	import type { CreateFeedbackDto } from '@ddsgt_mono/lib';
-	import FeedbackModal from './modals/FeedbackModal.svelte';
 	import { invalidate } from '$app/navigation';
 
-	let editingFeedback: Partial<CreateFeedbackDto> | undefined;
+	// let editingFeedback: Partial<CreateFeedbackDto> | undefined;
 
-	function createFeedback(data: Partial<CreateFeedbackDto>) {
-		editingFeedback = data;
-	}
+	// function createFeedback(data: Partial<CreateFeedbackDto>) {
+	// 	editingFeedback = data;
+	// }
 
-	function onRefreshPage() {
-		editingFeedback = undefined;
-		invalidate('fetch:feedback');
-	}
+	// function onRefreshPage() {
+	// 	editingFeedback = undefined;
+	// 	invalidate('fetch:feedback');
+	// }
 </script>
 
 <footer class="footer">
@@ -58,9 +56,9 @@
 				<div>
 					<!-- svelte-ignore a11y-interactive-supports-focus -->
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<span role="button" class="link link_underlined" on:click={() => createFeedback({})}>
-						Связаться с нами</span
-					>
+					<!-- <span role="button" class="link link_underlined" on:click={() => createFeedback({})}> -->
+					<!-- Связаться с нами</span -->
+					<!-- > -->
 				</div>
 			</div>
 		</div>
@@ -90,14 +88,6 @@
 	</div>
 </footer>
 
-{#if editingFeedback != undefined}
-	<FeedbackModal
-		feedbackData={editingFeedback}
-		on:close={() => (editingFeedback = undefined)}
-		on:refresh={onRefreshPage}
-	/>
-{/if}
-
 <style lang="postcss">
 	.footer {
 		margin-top: 50px;
@@ -113,7 +103,7 @@
 			font-size: 12px;
 			line-height: 26px;
 
-			@screen laptop {
+			@media laptop {
 				grid-template-columns: 1fr 1fr 1fr 1fr;
 				font-size: 14px;
 				line-height: 30px;
@@ -125,7 +115,7 @@
 			grid-template-columns: 1fr;
 
 			align-items: center;
-			@screen laptop {
+			@media laptop {
 				grid-template-columns: 1fr 1fr 1fr 1fr;
 			}
 		}
@@ -138,7 +128,7 @@
 			color: var(--light-descr);
 			grid-gap: 15px;
 
-			@screen laptop {
+			@media laptop {
 				grid-gap: unset;
 			}
 		}
@@ -147,7 +137,7 @@
 			order: -2;
 			align-self: center;
 			width: 85px;
-			@screen laptop {
+			@media laptop {
 				width: 150px;
 				order: unset;
 			}
@@ -157,7 +147,7 @@
 			text-align: left;
 			order: -1;
 
-			@screen laptop {
+			@media laptop {
 				text-align: right;
 				order: unset;
 			}
@@ -174,7 +164,7 @@
 			grid-gap: 15px;
 			justify-content: flex-start;
 
-			@screen laptop {
+			@media laptop {
 				justify-content: flex-end;
 				margin-top: 0px;
 			}

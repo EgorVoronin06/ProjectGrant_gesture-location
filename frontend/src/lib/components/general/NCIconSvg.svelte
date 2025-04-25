@@ -1,35 +1,38 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	// import { createEventDispatcher } from 'svelte';
 
-	export let iconId: string = '';
-	export let width: number = 20;
-	export let height: number = width;
-	export let fill: string = 'light';
-	export let clickable: boolean = false;
+	let props = $props();
 
-	const dispatch = createEventDispatcher();
+	let iconId: string = props.iconId || '';
+	let width: number = props.width || 20;
+	let height: number = props.height || width;
+	let fill: string = props.fill || 'light';
+	let clickable: boolean = props.clickable || false;
+
+	// const dispatch = createEventDispatcher();
 	const onClick = () => {
 		if (clickable) {
-			dispatch('click');
+			props.click();
 		}
 	};
+
 	const onKeyUp = (e: KeyboardEvent) => {
 		if (clickable) {
-			dispatch('keyup', e);
+			props.keyup(e);
 		}
 	};
 </script>
 
 {#if iconId}
 	<svg
-		class="nc-icon {$$props.class}"
+		class="nc-icon {props.class}"
 		class:clickable
 		viewBox="0 0 {width} {height}"
 		{width}
 		{height}
 		fill="var(--{fill})"
-		on:click={onClick}
-		on:keyup={onKeyUp}
+		onclick={onClick}
+		onkeyup={onKeyUp}
 		role="button"
 		tabindex="0"
 	>

@@ -1,7 +1,7 @@
-// import { User } from "../users/users.dto";
+import { User } from "../users/users.dto";
 
-// export type RefreshResponse = {
-// 	refreshToken: string;
-// 	accessToken: string;
-//   user: User
-// };
+export type RefreshResponse = {
+	refreshToken: string;
+	accessToken: string;
+  user: User
+};

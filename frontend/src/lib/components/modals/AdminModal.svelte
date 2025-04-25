@@ -1,12 +1,15 @@
 <script>
 	import { fade, fly, slide } from 'svelte/transition';
-	import Icon from './general/Icon.svelte';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import NCIconSvg from '../general/NCIconSvg.svelte';
+	import { onDestroy, onMount } from 'svelte';
 
-	const dispatch = createEventDispatcher();
+	let props = $props();
+
+	// const dispatch = createEventDispatcher();
 
 	function onClose() {
-		dispatch('close');
+		// dispatch('close');
+		props.close();
 	}
 
 	onMount(() => {
@@ -19,9 +22,9 @@
 </script>
 
 <div class="shadow" transition:fade>
-	<div class="modal {$$props.class}" transition:fly={{ x: 500, duration: 300, delay: 200 }}>
-		<button class="modal__btn" on:click={onClose}>
-			<Icon iconId="close-cross" width={40} />
+	<div class="modal {props.class}" transition:fly={{ x: 500, duration: 300, delay: 200 }}>
+		<button class="modal__btn" onclick={onClose}>
+			<NCIconSvg iconId="close-cross" width={40} />
 		</button>
 		<slot />
 	</div>
@@ -50,7 +53,7 @@
 
 		overflow-y: auto;
 
-		@screen tablet {
+		@media tablet {
 			padding: 50px 80px;
 		}
 	}

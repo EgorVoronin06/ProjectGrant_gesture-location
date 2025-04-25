@@ -10,20 +10,17 @@
 	import { categoriesStore } from '$lib/stores/categoryStore';
 	import { attributesStore } from '../lib/stores/attributesStore';
 
-	export let data;
+	// export let data;
 	let { children } = $props();
 
-	categoriesStore.set(data.categories);
-	attributesStore.set(data.attributes);
-	settings.set(data.settings);
-	user.set(data.user);
+	// user.set(data.user);
 
-	let authModalOpened = false;
+	let authModalOpened = $state(false);
 
-	const siteTitle = 'Дядя Дёнер';
+	// const siteTitle = 'Дядя Дёнер';
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
 	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
 	<link rel="canonical" href="https://ddsgt.ru" />
 
@@ -36,7 +33,7 @@
 	<meta property="og:type" content={'website'} />
 	<meta property="og:image" content="images/chicken_classic.png" />
 	<meta property="og:image:alt" content="Классический дёнер" />
-</svelte:head>
+</svelte:head> -->
 
 <div class="page">
 	<div class="page-navbar">
@@ -74,7 +71,7 @@
 		gap: 20px;
 		flex-grow: 1;
 
-		@screen tablet {
+		@media tablet {
 			gap: 50px;
 		}
 	}

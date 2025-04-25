@@ -3,17 +3,18 @@
 	import { authApi, AuthApi } from '../../plugins/api/modules/auth';
 	import Button from '../form/Button.svelte';
 	import NcCodeInput from '../form/NCCodeInput.svelte';
-	import NcInputPhone from '../form/NCInputPhone.svelte';
-	import UserModal from '../UserModal.svelte';
+	import UserModal from './UserModal.svelte';
 	import { notification } from '../../stores/notifyStore';
 	import { ApiError } from '../../plugins/api';
 	import { env } from '$env/dynamic/public';
+
 	let dto = {
 		phone: '',
 		code: ''
 	};
 	let step: number = 1;
 	let authInstanceApi: AuthApi;
+
 	onMount(() => {
 		authInstanceApi = new AuthApi(fetch);
 		const loadTelegramWidget = () => {
@@ -42,6 +43,7 @@
 
 		loadTelegramWidget();
 	});
+
 	async function onButtonClick() {
 		try {
 			if (step === 1) {
@@ -60,14 +62,13 @@
 			}
 		}
 	}
+
 	$: buttonText = step === 1 ? 'Получить код' : 'Войти';
 </script>
 
 <UserModal on:close class="w-[580px] px-[80px] py-[50px]">
 	<h2 class="mb-4">Вход в личный кабинет</h2>
-	{#if step === 1}
-		<NcInputPhone bind:value={dto.phone} placeholder="+7(___)-___-____" label="Телефон" />
-	{/if}
+	{#if step === 1}{/if}
 	{#if step === 2}
 		<NcCodeInput class="mb-4" bind:value={dto.code} />
 		<p class="text-[14px] mb-3">

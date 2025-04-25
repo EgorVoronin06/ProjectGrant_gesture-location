@@ -8,7 +8,9 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { UsersApi } from '$lib/plugins/api/modules/users';
 
-	const dispatch = createEventDispatcher();
+	let props = $props();
+
+	// const dispatch = createEventDispatcher();
 	let usersApi: UsersApi;
 	const statusSelectOptions = Object.keys(RolesNames)
 		.filter((key) => isNaN(Number(key)))
@@ -16,7 +18,7 @@
 			return { value: status, label: RolesNames[status as RoleValues] };
 		});
 
-	export let user: User;
+	let user: User = props.user;
 
 	let errors: Record<string, string[]> | undefined = undefined;
 
@@ -35,7 +37,7 @@
 				role: Roles[user.role]
 			});
 			notification.success(`Пользователь c id: ${res.id} успешно обновлен!`);
-			dispatch('refresh');
+			props.refresh();
 		} catch (error) {
 			if (error instanceof ApiError) {
 				errors = error.body.errors;
@@ -50,7 +52,7 @@
 		}
 		try {
 			const res = await usersApi.deleteUser({ id });
-			dispatch('refresh');
+			props.refresh();
 			notification.success(`Пользователь c id: ${res.id} успешно удален!`);
 		} catch (error) {
 			notification.error('Error!');
