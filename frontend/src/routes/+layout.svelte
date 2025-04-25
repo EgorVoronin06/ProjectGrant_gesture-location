@@ -1,4 +1,6 @@
 <script lang="ts">
+	let { children } = $props();
+
 	import '$lib/assets/css/app.css';
 	import Footer from '$lib/components/Footer.svelte';
 	import StatusNotification from '$lib/components/form/StatusNotification.svelte';
@@ -11,7 +13,6 @@
 	import { attributesStore } from '../lib/stores/attributesStore';
 
 	// export let data;
-	let { children } = $props();
 
 	// user.set(data.user);
 
