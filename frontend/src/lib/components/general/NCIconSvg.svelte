@@ -6,7 +6,7 @@
 	let iconId: string = props.iconId || '';
 	let width: number = props.width || 20;
 	let height: number = props.height || width;
-	let fill: string = props.fill || 'light';
+	let fill: string = props.fill || 'color-primary';
 	let clickable: boolean = props.clickable || false;
 
 	// const dispatch = createEventDispatcher();
@@ -21,8 +21,6 @@
 			props.keyup(e);
 		}
 	};
-
-	console.log(iconId, width);
 </script>
 
 {#if iconId}
