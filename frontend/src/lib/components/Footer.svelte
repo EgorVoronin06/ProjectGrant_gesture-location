@@ -15,7 +15,7 @@
 				</div>
 			</div>
 		</div>
-		<img src="images/qr.png" alt="QR-код" />
+		<img src="images/qr.png" alt="QR-код" width="110" height="116" />
 	</div>
 </footer>
 
