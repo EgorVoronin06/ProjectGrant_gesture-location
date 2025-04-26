@@ -43,7 +43,10 @@
 		padding: 60px 45px;
 
 		border-radius: 20px;
-		background-color: #f3f6ff;
+		background: #f3f6ff url(/images/bg_platform.svg) no-repeat;
+		background-size: 100%;
+
+		overflow: hidden;
 	}
 
 	.platform__info {
