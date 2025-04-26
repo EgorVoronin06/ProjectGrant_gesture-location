@@ -126,3 +126,14 @@ a {
 button {
 	font-family: inherit;
 }
+
+.section-title {
+	margin-bottom: 50px;
+
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-size: 40px;
+	line-height: normal;
+	font-weight: 600;
+	color: var(--color-black);
+}

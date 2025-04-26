@@ -44,7 +44,7 @@
 </script>
 
 <section class="about container mx-auto min-w-[360px] pb-14" id="about">
-	<h2 class="about__title">Чем полезны<br /> тренировки в нашем центре?</h2>
+	<h2 class="about__title section-title">Чем полезны<br /> тренировки в нашем центре?</h2>
 	<ul class="about__list">
 		{#each items as item}
 			<li class="about__card card">
@@ -62,7 +62,7 @@
 		padding-bottom: 56px;
 	}
 
-	.about__title {
+	/* .about__title {
 		margin-bottom: 50px;
 
 		font-family: Inter, sans-serif;
@@ -71,11 +71,7 @@
 		line-height: normal;
 		font-weight: 600;
 		color: var(--color-black);
-		/* @media (max-width: theme('screens.laptop')) {
-			font-size: 35px;
-			text-align: center;
-		} */
-	}
+	} */
 
 	.about__list {
 		display: grid;
