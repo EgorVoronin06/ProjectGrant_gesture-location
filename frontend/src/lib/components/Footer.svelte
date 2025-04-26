@@ -17,7 +17,7 @@
 	<div class="container mx-auto px-[15px]">
 		<div class="footer__content">
 			<div class="footer__logo-wrap">
-				<img src="/icons/logo-light.svg" class="footer__logo" alt="Дядя дёнер" />
+				<!-- <img src="/icons/logo-light.svg" class="footer__logo" alt="Дядя дёнер" /> -->
 			</div>
 			<div>
 				<div>
@@ -79,10 +79,10 @@
 				<a href="/offer" class="link link_light"> Договор оферты </a>
 			</div>
 			<div class="footer__payments">
-				<img src="/icons/payments/jsb.svg" alt="jsb" />
-				<img src="/icons/payments/visa.svg" alt="visa" />
-				<img src="/icons/payments/master_card.svg" alt="master" />
-				<img src="/icons/payments/world.svg" alt="world" />
+				<!-- <img src="/icons/payments/jsb.svg" alt="jsb" /> -->
+				<!-- <img src="/icons/payments/visa.svg" alt="visa" /> -->
+				<!-- <img src="/icons/payments/master_card.svg" alt="master" /> -->
+				<!-- <img src="/icons/payments/world.svg" alt="world" /> -->
 			</div>
 		</div>
 	</div>

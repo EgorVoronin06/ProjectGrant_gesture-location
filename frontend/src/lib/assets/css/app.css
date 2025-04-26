@@ -1,13 +1,24 @@
-@import url('./global.css');
+/* @import url('./global.css'); */
 @import 'tailwindcss';
 
 @theme {
+	--breakpoint: inset;
 	/* --font-display: 'Satoshi', 'sans-serif'; */
 	--breakpoint-mobile: 320px;
 	--breakpoint-sm: 375px;
 	--breakpoint-lm: 420px;
+	--breakpoint-xl: 1440px;
 	--breakpoint-tablet: 640px;
 	--breakpoint-md: 768px;
 	--breakpoint-laptop: 1024px;
 	--breakpoint-desktop: 1280px;
+}
+
+:root {
+	--color-primary: #009de0;
+	--color-primary-transparent: rgba(0, 157, 224, 0.37);
+	--color-dark: #393939;
+	--color-black: #000000;
+	--color-white: #ffffff;
+	--color-grey: #f3f6ff;
 }
