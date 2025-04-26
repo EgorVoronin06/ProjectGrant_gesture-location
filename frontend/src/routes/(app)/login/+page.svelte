@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/form/Button.svelte';
 	import NcCodeInput from '$lib/components/form/NCCodeInput.svelte';
-	import NcInputPhone from '$lib/components/form/NCInputPhone.svelte';
 	import { ApiError } from '$lib/plugins/api';
 	import { AuthApi } from '$lib/plugins/api/modules/auth';
 	import { onMount } from 'svelte';
@@ -67,9 +66,7 @@
 
 <div class="login-page container">
 	<h2 class="mb-4">Вход в личный кабинет</h2>
-	{#if step === 1}
-		<NcInputPhone bind:value={dto.phone} placeholder="+7(___)-___-____" label="Телефон" />
-	{/if}
+	{#if step === 1}{/if}
 	{#if step === 2}
 		<NcCodeInput class="mb-4" bind:value={dto.code} />
 		<p class="text-[14px] mb-3">

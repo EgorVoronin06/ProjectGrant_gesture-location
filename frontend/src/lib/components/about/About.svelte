@@ -57,4 +57,86 @@
 </section>
 
 <style lang="postcss">
+	.about {
+		padding-top: 60px;
+		padding-bottom: 56px;
+	}
+
+	.about__title {
+		margin-bottom: 50px;
+
+		font-family: Inter, sans-serif;
+		font-style: normal;
+		font-size: 40px;
+		line-height: normal;
+		font-weight: 600;
+		color: var(--color-black);
+		/* @media (max-width: theme('screens.laptop')) {
+			font-size: 35px;
+			text-align: center;
+		} */
+	}
+
+	.about__list {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+
+		gap: 24px;
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 20px;
+		padding: 35px;
+
+		font-family: Inter, sans-serif;
+		font-style: normal;
+		line-height: normal;
+
+		background-color: #f3f6ff;
+		border-radius: 20px;
+		align-items: center;
+	}
+
+	.card__title {
+		max-width: 226px;
+		font-size: 28px;
+		font-weight: 700;
+		text-align: center;
+	}
+
+	.card__description {
+		max-width: 336px;
+		margin-bottom: auto;
+
+		font-size: 16px;
+		font-weight: 300;
+
+		text-align: center;
+	}
+
+	.card__img {
+		width: 350px;
+	}
+	.card:last-child {
+		position: relative;
+		grid-row: 1/3;
+		grid-column: 3/4;
+		aspect-ratio: 0;
+
+		padding-bottom: 0;
+
+		color: var(--color-white);
+		background-color: var(--color-primary);
+	}
+
+	.card:last-child .card__img {
+		position: absolute;
+		right: 42px;
+		bottom: 0;
+		width: 410px;
+		height: unset;
+	}
 </style>
