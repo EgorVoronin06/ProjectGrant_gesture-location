@@ -44,7 +44,9 @@
 </script>
 
 <section class="about" id="about">
-	<h2 class="about__title section-title">Чем полезны<br /> тренировки в нашем центре?</h2>
+	<h2 class="about__title section-title">
+		Чем полезно <br /> обучение жестовому языку?
+	</h2>
 	<ul class="about__list">
 		{#each items as item}
 			<li class="about__card card">
