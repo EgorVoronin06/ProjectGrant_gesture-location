@@ -22,7 +22,14 @@
 	<div class="container team__container">
 		<div class="team__person">
 			<h2 class="section-title team__title team__title--top">Команда NeedCode</h2>
-			<div class="team__photos"></div>
+			<div class="team__photos">
+				<img
+					src="/images/dream-team.png"
+					alt="Команда NeedCode в полном составе"
+					width="556"
+					height="536"
+				/>
+			</div>
 		</div>
 		<div class="team__information team-information">
 			<p class="team-information__greeting">Всем привет!</p>
@@ -47,15 +54,18 @@
 
 <style>
 	.team {
+		margin-bottom: 60px;
+
 		background: #f3f6ff url(/images/background-team.svg) no-repeat;
 		background-size: cover;
 	}
 
 	.team__container {
 		display: grid;
+		/* display: flex; */
 		grid-template-columns: 1fr 1fr;
 		gap: 35px;
-		padding: 60px 0 100px 0;
+		padding: 60px 0 60px 0;
 	}
 
 	.team__person {
@@ -108,17 +118,16 @@
 	}
 
 	.team__photos {
-		height: 400px;
-
-		background-color: var(--color-white);
-		border-radius: 0 10px 10px 10px;
+		padding-top: 40px;
 	}
 
 	.team__information {
 		position: relative;
-		min-height: 100%;
-		padding: 30px 35px 10px 35px;
 
+		display: flex;
+		flex-direction: column;
+		padding: 30px 35px 10px 35px;
+		height: 600px;
 		background-color: var(--color-white);
 		border-radius: 10px 10px 0 10px;
 	}
@@ -133,12 +142,13 @@
 
 	.team-information__text {
 		font-size: 16px;
-		margin-bottom: 60px;
+		/* margin-bottom: 60px; */
 	}
 
 	.team-information__list {
 		display: flex;
 		justify-content: space-between;
 		gap: 10px;
+		margin-top: auto;
 	}
 </style>
