@@ -6,11 +6,11 @@
 	import StatusNotification from '$lib/components/form/StatusNotification.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import { notification } from '$lib/stores/notifyStore';
-	import AuthModal from '../lib/components/modals/AuthModal.svelte';
-	import { user } from '../lib/stores/authStore';
-	import { settings } from '../lib/stores/settingsStore';
-	import { categoriesStore } from '$lib/stores/categoryStore';
-	import { attributesStore } from '../lib/stores/attributesStore';
+	import AuthModal from '$lib/components/modals/AuthModal.svelte';
+	// import { user } from '$lib/stores/authStore';
+	// import { settings } from '$lib/stores/settingsStore';
+	// import { categoriesStore } from '$lib/stores/categoryStore';
+	// import { attributesStore } from '$lib/stores/attributesStore';
 
 	// export let data;
 
