@@ -129,7 +129,6 @@
 	}
 
 	async function createInferenceSession() {
-		// Укажите использование WebGL для вычислений на GPU
 		const sessionOptions = { executionProviders: ['webgl', 'wasm'] };
 		session = await ort.InferenceSession.create(config.modelPath, sessionOptions);
 	}

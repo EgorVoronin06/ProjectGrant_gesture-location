@@ -1,12 +1,8 @@
-import type {
-  FaceLandmarkerResult,
-  HandLandmarkerResult,
-  PoseLandmarkerResult,
-} from "@mediapipe/tasks-vision";
+import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 export interface FrameData {
-  timestamp: number;
-  pose?: PoseLandmarkerResult;
-  hands?: HandLandmarkerResult;
-  face?: FaceLandmarkerResult;
+	timestamp: number;
+	pose?: NormalizedLandmark[][];
+	hands?: NormalizedLandmark[][];
+	face?: NormalizedLandmark[][];
 }

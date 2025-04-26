@@ -1,9 +1,8 @@
 <script>
 	import { fade, slide } from 'svelte/transition';
-	import NCIconSvg from '../general/NCIconSvg.svelte';
 	import { onDestroy, onMount } from 'svelte';
 
-	let props = $props();
+	let { children, close } = $props();
 
 	// const dispatch = createEventDispatcher();
 
@@ -11,7 +10,7 @@
 
 	function onClose() {
 		// dispatch('close');
-		props.close();
+		close();
 	}
 
 	onMount(() => {
@@ -24,11 +23,9 @@
 </script>
 
 <div class="shadow" transition:fade={{ duration: 150 }}>
-	<div class="modal {props.class}">
-		<button class="modal__btn" onclick={onClose}>
-			<NCIconSvg iconId="close-cross" width={33} height={33} />
-		</button>
-		<slot />
+	<div class="modal">
+		<button class="modal__btn" onclick={onClose}>X</button>
+		{@render children()}
 	</div>
 </div>
 
@@ -49,11 +46,12 @@
 	.modal {
 		position: relative;
 		max-height: 100vh;
-		background-color: var(--white);
+		background-color: white;
 		overflow: hidden;
 		overflow-y: auto;
-
+		min-width: 500px;
 		border-radius: 15px;
+		padding: 50px 30px 30px 30px;
 	}
 	.modal__btn {
 		position: absolute;
@@ -67,8 +65,9 @@
 		width: 50px;
 		height: 50px;
 
-		background-color: var(--light-grey);
+		background-color: var(--color-primary);
 		border-radius: 0 0 0 50%;
+		border: none;
 
 		transition: all 0.15s ease-in;
 
@@ -76,7 +75,7 @@
 		outline: none;
 
 		&:hover {
-			background: var(--grey);
+			background-color: var(--color-primary-lighter);
 		}
 	}
 </style>
