@@ -58,6 +58,7 @@
 
 		border: none;
 		border-radius: 8px;
+		font-weight: normal;
 	}
 
 	.small {
@@ -70,7 +71,7 @@
 		/* TODO переделать ширину */
 		/* width: 283px; */
 		padding: 13px;
-		font-weight: 700;
+		font-weight: 500;
 	}
 
 	.medium {
@@ -88,7 +89,8 @@
 	}
 
 	.button--primary {
-		background-color: var(--primary);
+		background-color: var(--color-primary);
+		color: white;
 	}
 
 	.button--black {
@@ -97,7 +99,8 @@
 	}
 
 	.button--primary:hover {
-		background-color: var(--dark-primary);
+		background-color: var(--color-primary-lighter);
+		cursor: pointer;
 	}
 
 	.button:disabled {

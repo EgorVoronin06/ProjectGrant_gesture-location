@@ -23,5 +23,8 @@
     "frontend",
     "backend",
     "lib"
-  ]
+  ],
+  "dependencies": {
+    "drizzle-orm": "^0.43.1"
+  }
 }
