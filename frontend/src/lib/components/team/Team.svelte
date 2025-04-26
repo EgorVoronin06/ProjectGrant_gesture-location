@@ -55,7 +55,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 35px;
-		padding: 50px 0 100px 0;
+		padding: 60px 0 100px 0;
 	}
 
 	.team__person {
@@ -76,18 +76,35 @@
 		background-color: var(--color-primary);
 	}
 
-	.team__title::after {
+	.team__title--top::after {
 		content: '';
-	}
+		position: absolute;
+		bottom: 0;
 
-	.team__title--top {
+		width: 165px;
+		height: 165px;
+		background-image: url('images/avatar_4.png');
 	}
 
 	.team__title--bottom {
 		position: absolute;
 		right: 0;
 		bottom: -75px;
+
+		width: 67%;
+
 		border-radius: 0 0 10px 10px;
+	}
+
+	.team__title--bottom::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: -75px;
+
+		width: 165px;
+		height: 165px;
+		background-image: url('images/avatar_5.png');
 	}
 
 	.team__photos {
@@ -122,5 +139,6 @@
 	.team-information__list {
 		display: flex;
 		justify-content: space-between;
+		gap: 10px;
 	}
 </style>
