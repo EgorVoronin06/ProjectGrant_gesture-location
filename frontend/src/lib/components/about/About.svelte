@@ -43,7 +43,7 @@
 	];
 </script>
 
-<section class="about container mx-auto min-w-[360px] pb-14" id="about">
+<section class="about" id="about">
 	<h2 class="about__title section-title">Чем полезны<br /> тренировки в нашем центре?</h2>
 	<ul class="about__list">
 		{#each items as item}
