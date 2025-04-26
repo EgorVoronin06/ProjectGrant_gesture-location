@@ -5,7 +5,7 @@
 		{
 			title: 'Курсы',
 			url: '/admin/cources',
-			icon: 'cources'
+			icon: 'courses'
 		},
 		{
 			title: 'Словарь',

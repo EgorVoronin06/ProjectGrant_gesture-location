@@ -11,7 +11,9 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"lint": "prettier --check . && eslint .",
+		"migration:create": "drizzle-kit generate --config=./src/lib/db/drizzle.config.ts $npm_config_name",
+		"migration:push": "tsx ./src/lib/db/migration.ts"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
@@ -35,12 +37,14 @@
 	},
 	"dependencies": {
 		"@mediapipe/tasks-vision": "^0.10.22-rc.20250304",
+		"@sveltejs/adapter-node": "^5.2.12",
 		"@tailwindcss/postcss": "^4.1.4",
 		"@tailwindcss/vite": "^4.1.4",
 		"@tensorflow/tfjs": "^4.22.0",
 		"drizzle-kit": "^0.31.0",
 		"lib": "^1.0.0",
 		"onnxruntime-web": "^1.21.1",
+		"pg": "^8.15.6",
 		"postcss": "^8.5.3",
 		"tailwindcss": "^4.1.4"
 	}

@@ -3,7 +3,7 @@ import config from './db-config';
 
 export default {
 	dialect: 'postgresql',
-	schema: './src/**/*.entity.ts',
+	schema: './src/lib/db/entities/*.entity.ts',
 	dbCredentials: {
 		host: config.dbHost,
 		port: +config.dbPort,
