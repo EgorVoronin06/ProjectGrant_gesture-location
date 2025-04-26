@@ -118,7 +118,8 @@
 	}
 
 	.card__img {
-		width: 350px;
+		height: 150px;
+		width: unset;
 	}
 	.card:last-child {
 		position: relative;
@@ -136,7 +137,7 @@
 		position: absolute;
 		right: 42px;
 		bottom: 0;
-		width: 410px;
+		width: 370px;
 		height: unset;
 	}
 </style>

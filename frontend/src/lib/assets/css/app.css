@@ -1,18 +1,5 @@
-/* @import url('./global.css'); */
-@import 'tailwindcss';
-
-@theme {
-	--breakpoint: inset;
-	/* --font-display: 'Satoshi', 'sans-serif'; */
-	--breakpoint-mobile: 320px;
-	--breakpoint-sm: 375px;
-	--breakpoint-lm: 420px;
-	--breakpoint-xl: 1440px;
-	--breakpoint-tablet: 640px;
-	--breakpoint-md: 768px;
-	--breakpoint-laptop: 1024px;
-	--breakpoint-desktop: 1280px;
-}
+@import url('./global.css');
+/* @import 'tailwindcss'; */
 
 :root {
 	--color-primary: #009de0;
