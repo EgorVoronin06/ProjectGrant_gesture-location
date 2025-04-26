@@ -52,4 +52,10 @@
 		font-weight: 300;
 		color: var(--color-white);
 	}
+
+	.socials__wrapper {
+		display: flex;
+		gap: 10px;
+		margin-top: 5px;
+	}
 </style>
