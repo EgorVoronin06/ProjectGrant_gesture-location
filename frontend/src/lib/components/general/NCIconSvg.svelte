@@ -21,6 +21,8 @@
 			props.keyup(e);
 		}
 	};
+
+	console.log(iconId, width);
 </script>
 
 {#if iconId}
