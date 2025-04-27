@@ -1,12 +1,22 @@
 <script lang="ts">
 	import * as ort from 'onnxruntime-web';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
+	interface Props {
+		predict: string;
+		confidence: number;
+		showPredict: boolean;
+	}
+
+	let { predict = $bindable(), confidence = $bindable(), showPredict = true }: Props = $props();
 	let videoElement: HTMLVideoElement;
 	let prediction = 'Loading...';
 
 	let tensorBuffer: Float32Array[] = [];
 	let session: ort.InferenceSession;
+
+	let intervalId: number;
+	let stream: MediaStream | null = null;
 
 	// Параметры конфигурации
 	const config = {
@@ -59,9 +69,7 @@
 
 	async function setupCamera() {
 		try {
-			const stream = await navigator.mediaDevices.getUserMedia({
-				video: true
-			});
+			stream = await navigator.mediaDevices.getUserMedia({ video: true });
 			videoElement.srcObject = stream;
 			return new Promise((resolve) => {
 				videoElement.onloadedmetadata = () => resolve(true);
@@ -114,8 +122,10 @@
 			const results = await session.run(feeds);
 			const output = results[session.outputNames[0]];
 			const predictedIndex = output.data.indexOf(Math.max(...output.data));
+			const confid = output.data[predictedIndex] * 100;
 			prediction = config.labels[predictedIndex];
-			console.log('Predicted gesture:', prediction); // Логирование предсказания
+			predict = config.labels[predictedIndex];
+			confidence = +confid.toFixed(2);
 
 			// Визуальная обратная связь
 			const predictionElement = document.querySelector('.prediction');
@@ -138,16 +148,36 @@
 
 		try {
 			await createInferenceSession();
-			setInterval(runInference, config.frameInterval * 100); // Использование frameInterval из конфигурации
+			intervalId = setInterval(runInference, config.frameInterval * 100);
 		} catch (error) {
 			console.error('Error creating inference session:', error);
 		}
 	});
+	onDestroy(() => {
+		console.log('Destroying GestureRecognizer component...');
+
+		// Остановить захват камеры
+		if (stream) {
+			stream.getTracks().forEach((track) => track.stop());
+		}
+
+		// Очистить интервал инференса
+		if (intervalId) {
+			clearInterval(intervalId);
+		}
+
+		// (опционально) Очистить srcObject
+		if (videoElement) {
+			videoElement.srcObject = null;
+		}
+	});
 </script>
 
-<main class="flex flex-col items-center justify-center p-4 bg-black min-h-screen">
+<main>
 	<video bind:this={videoElement} autoplay playsinline muted></video>
-	<div class="prediction">Prediction: {prediction}</div>
+	{#if showPredict}
+		<div class="prediction">Prediction: {prediction}</div>
+	{/if}
 </main>
 
 <style>
@@ -156,6 +186,7 @@
 		height: 480px;
 		border: 1px solid #ccc;
 		margin-bottom: 1rem;
+		border-radius: 15px;
 	}
 	.prediction {
 		font-size: 1.5rem;

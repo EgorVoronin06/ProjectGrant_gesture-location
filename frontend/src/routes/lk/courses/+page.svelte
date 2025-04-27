@@ -37,7 +37,7 @@
 		<h1>Курсы</h1>
 	</div>
 	<div class="courses-page__content">
-		{#each courses as course}
+		{#each courses as course (course.level)}
 			<CourseCard {...course} />
 		{/each}
 	</div>
@@ -62,7 +62,7 @@
 	.courses-page__content {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 70px;
+		gap: 30px;
 		padding: 10px 35px;
 
 		/* background-color: white;

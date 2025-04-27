@@ -14,7 +14,7 @@
 		},
 		{
 			title: 'Войти',
-			url: '/#login'
+			url: '/lk/courses'
 		}
 	];
 

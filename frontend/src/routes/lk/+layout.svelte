@@ -25,6 +25,16 @@
 			icon: 'books'
 		},
 		{
+			title: 'Словарь',
+			url: '/lk/dict',
+			icon: 'dict'
+		},
+		{
+			title: 'Тренажеры',
+			url: '/lk/train',
+			icon: 'dict'
+		},
+		{
 			title: 'Тесты',
 			url: '/lk/tests',
 			icon: 'tests'
@@ -72,7 +82,6 @@
 	}
 
 	.admin-layout {
-		height: 100dvh;
 		height: 100vh;
 		padding: 10px;
 		display: grid;
@@ -84,10 +93,10 @@
 	.admin-layout__sidebar {
 		display: flex;
 		flex-direction: column;
-		padding-left: 10px;
 		border-radius: 10px;
 		background: white;
 		border: 1px solid var(--color-primary-transparent);
+		overflow: hidden;
 	}
 
 	.admin-layout__sidebar-splitter {
