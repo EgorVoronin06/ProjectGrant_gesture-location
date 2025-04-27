@@ -69,22 +69,18 @@
 	}
 
 	.button {
+		max-width: 460px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		padding: 40px 7px 40px 24px;
+
 		color: var(--color-white);
 		background: var(--color-primary);
 		border-radius: 20px;
 		font-size: 20px;
 		font-weight: 600;
-		padding: 6px 7px 6px 24px;
-		max-width: 460px;
-		/* @media (max-width: theme('screens.tablet')) {
-			max-width: 340px;
-			padding-left: 10px;
-			border-radius: 10px;
-			font-size: 16px;
-		} */
+		cursor: pointer;
 	}
 
 	.button__text {
@@ -97,13 +93,9 @@
 		justify-content: center;
 		width: 70px;
 		height: 70px;
+
 		background: var(--color-grey);
 		border-radius: 20px;
-		/* @media (max-width: theme('screens.tablet')) {
-			width: 50px;
-			height: 50px;
-			border-radius: 10px;
-		} */
 	}
 
 	.video {

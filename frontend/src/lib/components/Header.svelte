@@ -14,7 +14,7 @@
 		},
 		{
 			title: 'Войти',
-			url: '/#login'
+			url: '/lk/courses'
 		}
 	];
 
@@ -39,16 +39,17 @@
 			class:navbar__burger_active={open}
 			aria-label="Открыть меню"
 		>
-			<span class="navbar__burger-middle" />
+			<span class="navbar__burger-middle"></span>
 		</button>
 	</div>
 </header>
 
 <style lang="postcss">
 	.header {
-		box-shadow: 0 5px 10px 0 #0000001c;
-		padding: 20px;
+		padding: 10px;
+
 		background-color: var(--color-white);
+		box-shadow: 0 5px 10px 0 #0000001c;
 	}
 
 	.header__wrapper {
@@ -56,9 +57,7 @@
 		justify-content: space-between;
 		align-items: center;
 		gap: 20px;
-		padding: 16px 0;
 		margin: 0 auto;
-		max-width: calc(1440px-40px);
 	}
 
 	.navbar {

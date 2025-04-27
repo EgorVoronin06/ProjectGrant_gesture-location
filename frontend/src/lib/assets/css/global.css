@@ -9,11 +9,11 @@
 body {
 	min-height: 100vh;
 
-	font-family: 'Nunito', sans-serif;
+	font-family: Inter, sans-serif;
 	font-size: 16px;
 	line-height: 1.5;
 	color: var(--dark);
-	/* font-family: 'Roboto', sans-serif; */
+	/* font-family: 'Inter', sans-serif; */
 }
 
 *::-webkit-scrollbar {
@@ -37,7 +37,7 @@ body {
 	margin: -1px;
 	border: 0;
 	padding: 0;
-	white-space: nowrap;
+	white-space: no-wrap;
 	clip-path: inset(100%);
 	clip: rect(0 0 0 0);
 	overflow: hidden;
@@ -106,4 +106,34 @@ h4,
 	display: grid;
 	grid-auto-rows: min-content auto;
 	height: 100%;
+}
+
+ul li {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.container {
+	width: 1400px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+button {
+	font-family: inherit;
+}
+
+.section-title {
+	margin-bottom: 50px;
+
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-size: 40px;
+	line-height: normal;
+	font-weight: 600;
+	color: var(--color-black);
 }
