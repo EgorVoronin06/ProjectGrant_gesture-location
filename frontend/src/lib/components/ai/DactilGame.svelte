@@ -118,7 +118,7 @@
 			</div>
 
 			<p class="hint">Показывайте буквы по порядку!</p>
-			<Recognizer bind:predict bind:confidence showPredict={false} />
+			<Recognizer bind:predict bind:confidence showPredict={true} />
 		</div>
 	{:else if gameOver}
 		<div class="menu">

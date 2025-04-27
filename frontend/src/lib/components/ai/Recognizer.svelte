@@ -123,9 +123,9 @@
 			const output = results[session.outputNames[0]];
 			const predictedIndex = output.data.indexOf(Math.max(...output.data));
 			const confid = output.data[predictedIndex] * 100;
-			prediction = config.labels[predictedIndex];
-			predict = config.labels[predictedIndex];
 			confidence = +confid.toFixed(2);
+			prediction = config.labels[predictedIndex] + `(${confidence}%)`;
+			predict = config.labels[predictedIndex];
 
 			// Визуальная обратная связь
 			const predictionElement = document.querySelector('.prediction');

@@ -51,18 +51,18 @@
 		guessed: boolean;
 		confidence?: number;
 	}
-
+	let counter = $state(0);
 	let letters: FallingLetter[] = $state([]);
-	let maxConcurrentLetters = 3;
-	let spawnInterval = 2000; // Интервал появления новых букв (мс)
-	let letterFallSpeed = 1; // px за кадр
-	let gameDuration = 30; // секунд
+	let maxConcurrentLetters = $state(3);
+	let spawnInterval = $state(2000); // Интервал появления новых букв (мс)
+	let letterFallSpeed = $state(2); // px за кадр
+	let gameDuration = $state(30); // секунд
 	let timeLeft = $state(30);
 
 	let spawnTimer: NodeJS.Timeout | null = null;
 	let fallAnimation: number;
 	let gameTimer: NodeJS.Timeout | null = null;
-	let nextId = 0;
+	let nextId = $state(0);
 
 	function startGame() {
 		gameStarted = true;
@@ -113,7 +113,7 @@
 	}
 
 	$effect(() => {
-		if (predict && gameStarted) {
+		if (predict && gameStarted && confidence >= 60) {
 			checkPrediction();
 		}
 	});
@@ -121,6 +121,7 @@
 	function checkPrediction() {
 		const match = letters.find((l) => l.letter === predict && !l.guessed);
 		if (match) {
+			counter++;
 			match.guessed = true;
 			match.confidence = confidence;
 		}
@@ -163,7 +164,7 @@
 				<input type="number" bind:value={gameDuration} min="5" />
 			</label>
 
-			<button onclick={startGame}>Начать</button>
+			<button class="btn" onclick={startGame}>Начать</button>
 		</div>
 	{:else if gameStarted}
 		<div class="falling-game">
@@ -183,8 +184,9 @@
 	{:else if gameOver}
 		<div class="menu">
 			<h1>Игра окончена!</h1>
-			<p>Угадано букв: {letters.filter((l) => l.guessed).length}</p>
-			<button onclick={() => (gameOver = false)}>Играть снова</button>
+			<!-- <p>Угадано букв: {letters.filter((l) => l.guessed).length}</p> -->
+			<p>Поймано букв: {counter}</p>
+			<button class="btn" onclick={() => (gameOver = false)}>Играть снова</button>
 		</div>
 	{/if}
 </main>
@@ -194,19 +196,27 @@
 		position: relative;
 		overflow: hidden;
 		height: 100vh;
-		background: black;
-		color: white;
+		/* background: black; */
+		/* color: white; */
 	}
 
 	.menu {
 		text-align: center;
 		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
 	}
 
 	.falling-game {
 		position: relative;
 		width: 100%;
 		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.timer {
@@ -236,14 +246,20 @@
 		margin-top: 0.5rem;
 	}
 
-	button {
+	.btn {
 		margin-top: 2rem;
 		padding: 0.8rem 2rem;
 		font-size: 1.2rem;
 		border: none;
-		background: darkgreen;
+		background: var(--color-primary);
 		color: white;
 		border-radius: 5px;
 		cursor: pointer;
+	}
+	input {
+		font-size: 14px;
+		padding: 5px;
+		border-radius: 5px;
+		border: 1px solid var(--color-primary-transparent);
 	}
 </style>

@@ -1,13 +1,13 @@
 <script>
-	import DactilGame from '$lib/components/ai/DactilGame.svelte';
+	import SprintGame from '$lib/components/ai/SprintGame.svelte';
 </script>
 
 <div class="train-page">
 	<div class="train-page__bar">
-		<h1>Тренажер "Спринт"</h1>
+		<h1>Тренажер "Спринт со временем"</h1>
 	</div>
 	<div class="train-page__content">
-		<DactilGame />
+		<SprintGame />
 	</div>
 </div>
 

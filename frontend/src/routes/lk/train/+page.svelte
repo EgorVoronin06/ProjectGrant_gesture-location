@@ -6,8 +6,17 @@
 		<div class="train-page__card">
 			<h3 class="train-page__card-title">Спринт</h3>
 			<img class="train-page__card-img" src="/images/dactil.jpg" alt="dactil" />
-			<div>Описание</div>
 			<a href="/lk/train/sprint" class="train-page__card-btn">Начать</a>
+		</div>
+		<div class="train-page__card">
+			<h3 class="train-page__card-title">Спринт со временем</h3>
+			<img class="train-page__card-img" src="/images/dactil.jpg" alt="dactil" />
+			<a href="/lk/train/sprint-time" class="train-page__card-btn">Начать</a>
+		</div>
+		<div class="train-page__card">
+			<h3 class="train-page__card-title">Дождь</h3>
+			<img class="train-page__card-img" src="/images/dactil.jpg" alt="dactil" />
+			<a href="/lk/train/rain" class="train-page__card-btn">Начать</a>
 		</div>
 	</div>
 </div>
@@ -69,5 +78,6 @@
 		font-weight: 600;
 		color: white;
 		transform: translateX(-50%);
+		text-align: center;
 	}
 </style>

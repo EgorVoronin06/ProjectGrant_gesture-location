@@ -10,9 +10,9 @@
 	let averageConfidence = $state(0);
 
 	// Новые переменные
-	let totalLetters = 5;
-	let timePerLetter = 5; // Время на 1 букву (секунд)
-	let currentLetterIndex = 0;
+	let totalLetters = $state(5);
+	let timePerLetter = $state(5); // Время на 1 букву (секунд)
+	let currentLetterIndex = $state(0);
 	let remainingTime = $state(0);
 	let timerInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -146,7 +146,6 @@
 	{:else if gameStarted}
 		<div class="game">
 			<div class="timer">Оставшееся время на букву: {remainingTime} сек</div>
-
 			<div class="current-letter">
 				{#if lettersToGuess[currentLetterIndex]}
 					<div class="letter">
@@ -154,10 +153,11 @@
 					</div>
 				{/if}
 			</div>
+			<div>Угадано букв: {totalGuessed}</div>
 
 			<p class="hint">Показывайте текущую букву!</p>
 
-			<Recognizer bind:predict bind:confidence showPredict={false} />
+			<Recognizer bind:predict bind:confidence showPredict={true} />
 		</div>
 	{:else if gameOver}
 		<div class="menu">
@@ -182,10 +182,8 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		min-height: 100vh;
-		padding: 2rem;
-		background-color: #000;
-		color: white;
+		height: 100%;
+		/* min-height: 100vh; */
 	}
 
 	.menu,
@@ -199,8 +197,7 @@
 		font-size: 1rem;
 		border: 1px solid gray;
 		border-radius: 5px;
-		background-color: #222;
-		color: white;
+		border: 1px solid var(--color-primary-transparent);
 	}
 
 	button {
@@ -222,7 +219,7 @@
 	.timer {
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
-		color: #ffcc00;
+		color: var(--color-primary);
 	}
 
 	.current-letter {
@@ -234,18 +231,19 @@
 	.letter {
 		width: 80px;
 		height: 80px;
-		background-color: gray;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		border-radius: 8px;
 		font-size: 2rem;
+		background: var(--color-primary);
+		color: white;
 	}
 
 	.hint {
 		font-size: 1.2rem;
 		margin-bottom: 2rem;
-		color: #ccc;
+		color: green;
 	}
 
 	.highlight {

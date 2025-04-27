@@ -1,5 +1,5 @@
 <script>
-	import DactilGame from '$lib/components/ai/DactilGame.svelte';
+	import RainGame from '$lib/components/ai/RainGame.svelte';
 </script>
 
 <div class="train-page">
@@ -7,7 +7,7 @@
 		<h1>Тренажер "Спринт"</h1>
 	</div>
 	<div class="train-page__content">
-		<DactilGame />
+		<RainGame />
 	</div>
 </div>
 
