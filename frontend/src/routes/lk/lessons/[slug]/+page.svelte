@@ -5,7 +5,7 @@
 	let { data } = $props();
 
 	let lessonNumber = $state(1);
-	let lesson = $state({});
+	let lesson = $state({id: 1, title: '', content: '', dactyl: ''});
 
 	$effect(() => {
 		lessonNumber = +page.params.slug;
@@ -57,9 +57,16 @@
 		</div>
 	</div>
 	<div class="lesson-page__content">
+		{#if (lesson.content)}
 		<p class="lesson-page__text">
 			{lesson.content}
 		</p>
+		{/if}
+		{#if lesson.dactyl}
+			<p class="lesson-page__dactyl">{lesson.dactyl}</p>
+			<img class="lesson-page__dactyl-image" src="{lesson?.image}" alt="Дактиль {lesson.dactyl}">
+			<video src="/images/a-video.mp4"></video>
+		{/if}
 	</div>
 </div>
 
