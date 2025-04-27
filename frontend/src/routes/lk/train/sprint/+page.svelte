@@ -1,4 +1,5 @@
 <script>
+	import RainGame from '$lib/components/ai/RainGame.svelte';
 	import SprintGame from '$lib/components/ai/SprintGame.svelte';
 
 	// import SprintGame from '$lib/components/ai/SprintGame.svelte';
@@ -11,7 +12,8 @@
 	</div>
 	<div class="train-page__content">
 		<!-- <SprintGame /> -->
-		<SprintGameTwo />
+		<!-- <SprintGameTwo /> -->
+		<RainGame />
 	</div>
 </div>
 

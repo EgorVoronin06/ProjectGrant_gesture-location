@@ -2,16 +2,21 @@
 	import Recognizer from './Recognizer.svelte';
 
 	let gameStarted = $state(false);
-	let targetLetter = $state('');
 	let gameOver = $state(false);
-	let score = $state(0);
-	let total = $state(10); // сколько всего букв надо показать
-	let timePerLetter = $state(5); // секунд на букву
-	let remainingTime = $state(timePerLetter);
-	let lettersShown = $state(0);
-	let timerInterval: ReturnType<typeof setInterval>;
+	let lettersToGuess: { letter: string; guessed: boolean; confidence?: number }[] = $state([]);
+	let predict = $state('');
+	let confidence = $state(0);
+	let totalGuessed = $state(0);
+	let averageConfidence = $state(0);
 
-	const letters = [
+	// Новые переменные
+	let totalLetters = 5;
+	let timePerLetter = 5; // Время на 1 букву (секунд)
+	let currentLetterIndex = 0;
+	let remainingTime = $state(0);
+	let timerInterval: ReturnType<typeof setInterval> | null = null;
+
+	const allLetters = [
 		'Ё',
 		'А',
 		'Б',
@@ -47,93 +52,205 @@
 		'Я'
 	];
 
-	// Данные от нейросети
-	let predict = $state('');
-	let confidence = $state(0);
-
 	function startGame() {
 		gameStarted = true;
-		score = 0;
-		lettersShown = 0;
-		nextLetter();
-		timerInterval = setInterval(gameLoop, 1000);
+		gameOver = false;
+		lettersToGuess = [];
+
+		for (let i = 0; i < totalLetters; i++) {
+			const randomIndex = Math.floor(Math.random() * allLetters.length);
+			lettersToGuess.push({ letter: allLetters[randomIndex], guessed: false });
+		}
+
+		currentLetterIndex = 0;
+		totalGuessed = 0;
+		averageConfidence = 0;
+
+		startLetterTimer();
 	}
 
-	function nextLetter() {
-		const idx = Math.floor(Math.random() * letters.length);
-		targetLetter = letters[idx];
+	function startLetterTimer() {
 		remainingTime = timePerLetter;
+		if (timerInterval) clearInterval(timerInterval);
+		timerInterval = setInterval(() => {
+			remainingTime--;
+			if (remainingTime <= 0) {
+				moveToNextLetter();
+			}
+		}, 1000);
 	}
 
-	function gameLoop() {
-		remainingTime--;
-
-		if (remainingTime <= 0) {
-			checkAnswer();
+	function moveToNextLetter() {
+		if (timerInterval) {
+			clearInterval(timerInterval);
+			timerInterval = null;
 		}
-	}
 
-	function checkAnswer() {
-		if (predict === targetLetter) {
-			score++;
-		}
-		lettersShown++;
-
-		if (lettersShown >= total) {
+		currentLetterIndex++;
+		if (currentLetterIndex >= lettersToGuess.length) {
 			endGame();
 		} else {
-			nextLetter();
+			startLetterTimer();
 		}
 	}
 
 	function endGame() {
 		gameOver = true;
 		gameStarted = false;
-		clearInterval(timerInterval);
+		if (timerInterval) {
+			clearInterval(timerInterval);
+			timerInterval = null;
+		}
+	}
+
+	$effect(() => {
+		if (gameStarted && predict) {
+			checkPrediction();
+		}
+	});
+
+	function checkPrediction() {
+		const currentLetterObj = lettersToGuess[currentLetterIndex];
+		if (!currentLetterObj) return;
+
+		if (currentLetterObj.letter === predict) {
+			currentLetterObj.guessed = true;
+			currentLetterObj.confidence = confidence;
+			totalGuessed++;
+
+			const sumConfidence = lettersToGuess
+				.filter((l) => l.guessed && l.confidence !== undefined)
+				.reduce((sum, l) => sum + (l.confidence ?? 0), 0);
+
+			averageConfidence = +(sumConfidence / totalGuessed).toFixed(2);
+
+			moveToNextLetter();
+		}
 	}
 </script>
 
-<main class="flex flex-col items-center p-4 bg-gray-900 min-h-screen text-white">
+<main class="game-container">
 	{#if !gameStarted && !gameOver}
-		<div class="text-center">
-			<h1 class="text-2xl mb-4">Тренировка жестов</h1>
-			<label
-				>Количество букв:
-				<input type="number" bind:value={total} min="1" class="text-black px-2" />
+		<div class="menu">
+			<h1>Настройки</h1>
+			<label>
+				Количество букв:
+				<input type="number" bind:value={totalLetters} min="1" />
 			</label>
-			<br />
-			<label
-				>Время на букву (сек):
-				<input type="number" bind:value={timePerLetter} min="1" class="text-black px-2" />
+			<label>
+				Время на одну букву (секунды):
+				<input type="number" bind:value={timePerLetter} min="1" />
 			</label>
-			<br />
-			<button class="mt-4 bg-green-500 px-4 py-2 rounded" onclick={startGame}>Начать</button>
+			<button onclick={startGame}>Начать игру</button>
 		</div>
 	{:else if gameStarted}
-		<div class="text-center">
-			<h2 class="text-3xl mb-2">
-				Покажи: <span class="font-bold text-yellow-400">{targetLetter}</span>
-			</h2>
-			<p>Оставшееся время: {remainingTime} сек</p>
-			<p>Правильных: {score} / {lettersShown}</p>
-			<Recognizer bind:predict bind:confidence showPredict />
+		<div class="game">
+			<div class="timer">Оставшееся время на букву: {remainingTime} сек</div>
+
+			<div class="current-letter">
+				{#if lettersToGuess[currentLetterIndex]}
+					<div class="letter">
+						{lettersToGuess[currentLetterIndex].letter}
+					</div>
+				{/if}
+			</div>
+
+			<p class="hint">Показывайте текущую букву!</p>
+
+			<Recognizer bind:predict bind:confidence showPredict={false} />
 		</div>
 	{:else if gameOver}
-		<div class="text-center">
-			<h1 class="text-2xl mb-4">Игра окончена!</h1>
-			<p>Ваш результат: {score} из {total}</p>
+		<div class="menu">
+			<h1>Игра окончена!</h1>
+			<p>Угадано букв: <b>{totalGuessed} / {totalLetters}</b></p>
+			<p>Средняя уверенность нейросети: <span class="highlight">{averageConfidence}%</span></p>
 			<button
-				class="mt-4 bg-blue-500 px-4 py-2 rounded"
 				onclick={() => {
 					gameOver = false;
-				}}>Играть снова</button
+				}}
 			>
+				Играть снова
+			</button>
 		</div>
 	{/if}
 </main>
 
 <style>
+	/* Стиль под ночь */
+	.game-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 100vh;
+		padding: 2rem;
+		background-color: #000;
+		color: white;
+	}
+
+	.menu,
+	.game {
+		text-align: center;
+	}
+
 	input {
-		margin: 0.5rem 0;
+		margin: 0.5rem;
+		padding: 0.5rem;
+		font-size: 1rem;
+		border: 1px solid gray;
+		border-radius: 5px;
+		background-color: #222;
+		color: white;
+	}
+
+	button {
+		margin-top: 1rem;
+		padding: 0.7rem 1.5rem;
+		font-size: 1.1rem;
+		border: none;
+		border-radius: 5px;
+		background-color: #28a745;
+		color: white;
+		cursor: pointer;
+		transition: background-color 0.3s;
+	}
+
+	button:hover {
+		background-color: #218838;
+	}
+
+	.timer {
+		font-size: 1.5rem;
+		margin-bottom: 1rem;
+		color: #ffcc00;
+	}
+
+	.current-letter {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 2rem;
+	}
+
+	.letter {
+		width: 80px;
+		height: 80px;
+		background-color: gray;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 8px;
+		font-size: 2rem;
+	}
+
+	.hint {
+		font-size: 1.2rem;
+		margin-bottom: 2rem;
+		color: #ccc;
+	}
+
+	.highlight {
+		color: #00ccff;
+		font-weight: bold;
+		font-size: 1.2rem;
 	}
 </style>
