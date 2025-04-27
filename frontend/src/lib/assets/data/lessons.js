@@ -6,12 +6,14 @@ const lessons = [
   },
   {
     id: 2,
-    title: 'Урок 2. Дактильный алфавит',
-    content: ''
+    title: 'Урок 2. Буква дактиль А',
+    content: '',
+    dactyl: 'А',
+    image: '/dactyls/a.svg'
   },
   {
     id: 3,
-    title: 'Урок 3. Дактильный алфавит',
+    title: 'Урок 3. Буква дактиль Б',
     content: ''
   },
   {
