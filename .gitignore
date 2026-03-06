@@ -9,4 +9,5 @@
 
 *.dev.yml
 
-dist
+distbackend/config.ts
+backend/dist/config.js
