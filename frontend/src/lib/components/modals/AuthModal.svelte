@@ -1,196 +1,237 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { authApi, AuthApi } from '../../plugins/api/modules/auth';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import { AuthApi } from '../../plugins/api/modules/auth';
 	import Button from '../form/Button.svelte';
 	import NcCodeInput from '../form/NCCodeInput.svelte';
 	import UserModal from './UserModal.svelte';
 	import { notification } from '../../stores/notifyStore';
 	import { ApiError } from '../../plugins/api';
-	import { env } from '$env/dynamic/public';
 
-	let dto = {
+	const dispatch = createEventDispatcher<{ close: void }>();
+
+	type AuthMode = 'login' | 'register';
+	let mode: AuthMode = $state('login');
+	let registerStep = $state(1);
+
+	let dto = $state({
 		phone: '',
 		code: ''
-	};
-	let step: number = 1;
+	});
+
 	let authInstanceApi: AuthApi;
 
 	onMount(() => {
 		authInstanceApi = new AuthApi(fetch);
-		const loadTelegramWidget = () => {
-			const script = document.createElement('script');
-			script.async = true;
-			script.src = 'https://telegram.org/js/telegram-widget.js?22';
-
-			// Параметры виджета
-			script.dataset.telegramLogin = 'ddsgt_auth_bot';
-			script.dataset.size = 'large';
-			script.dataset.userpic = 'false';
-			script.dataset.radius = '8';
-			script.dataset.authUrl = `${env.PUBLIC_API_URL}/auth/telegram/callback`;
-			script.dataset.requestAccess = 'write';
-
-			// Обработчики загрузки
-			script.onload = () => console.log('Telegram Widget loaded');
-			script.onerror = (e) => {
-				console.error('Telegram Widget error:', e);
-			};
-
-			// Добавляем скрипт в контейнер
-			const container = document.getElementById('telegram-widget-container');
-			if (container) container.appendChild(script);
-		};
-
-		loadTelegramWidget();
 	});
 
-	async function onButtonClick() {
+	const title = $derived(mode === 'login' ? 'Вход' : 'Регистрация');
+	const buttonText = $derived(mode === 'register' && registerStep === 1 ? 'Отправить код' : 'Войти');
+
+	async function submitLogin() {
 		try {
-			if (step === 1) {
-				await authInstanceApi.sendCode(dto.phone);
-				step++;
-				return;
-			}
-			if (step === 2) {
-				const tokens = await authInstanceApi.signIn(dto.phone, dto.code);
-				window.location.href = `/auth?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`;
-			}
+			const tokens = await authInstanceApi.signIn(dto.phone, dto.code);
+			window.location.href = `/auth?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`;
 		} catch (error) {
 			if (error instanceof ApiError) {
-				console.log(error);
 				notification.error(error.message);
 			}
 		}
 	}
 
-	$: buttonText = step === 1 ? 'Получить код' : 'Войти';
+	async function submitRegister() {
+		try {
+			if (registerStep === 1) {
+				await authInstanceApi.sendCode(dto.phone);
+				registerStep = 2;
+				dto.code = '';
+				return;
+			}
+
+			const tokens = await authInstanceApi.signIn(dto.phone, dto.code);
+			window.location.href = `/auth?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`;
+		} catch (error) {
+			if (error instanceof ApiError) {
+				notification.error(error.message);
+			}
+		}
+	}
+
+	async function onPrimaryClick() {
+		if (mode === 'login') {
+			await submitLogin();
+			return;
+		}
+
+		await submitRegister();
+	}
+
+	function switchToLogin() {
+		mode = 'login';
+		registerStep = 1;
+		dto.code = '';
+	}
+
+	function switchToRegister() {
+		mode = 'register';
+		registerStep = 1;
+		dto.code = '';
+	}
 </script>
 
-<UserModal on:close class="w-[580px] px-[80px] py-[50px]">
-	<h2 class="mb-4">Вход в личный кабинет</h2>
-	{#if step === 1}{/if}
-	{#if step === 2}
-		<NcCodeInput class="mb-4" bind:value={dto.code} />
-		<p class="text-[14px] mb-3">
-			На указанный номер вам поступит звонок и робот продиктует ваш код для входа. Его необходимо
-			ввести в поле выше 🙂
-		</p>
-	{/if}
-	<Button primary full on:click={onButtonClick}>{buttonText}</Button>
-	{#if step === 1}
-		<div class="splitter">Или</div>
-		<div class="flex flex-col gap-[10px] items-center">
-			<div class="modal-container__tg_auth" id="telegram-widget-container"></div>
-			<a
-				href="{env.PUBLIC_API_URL}/auth/vk"
-				id="VKIDSDKAuthButton"
-				class="VkIdWebSdk__button VkIdWebSdk__button_reset"
-			>
-				<div class="VkIdWebSdk__button_container">
-					<div class="VkIdWebSdk__button_icon">
-						<svg
-							width="28"
-							height="28"
-							viewBox="0 0 28 28"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								fill-rule="evenodd"
-								clip-rule="evenodd"
-								d="M4.54648 4.54648C3 6.09295 3 8.58197 3 13.56V14.44C3 19.418 3 21.907 4.54648 23.4535C6.09295 25 8.58197 25 13.56 25H14.44C19.418 25 21.907 25 23.4535 23.4535C25 21.907 25
-        19.418 25 14.44V13.56C25 8.58197 25 6.09295 23.4535 4.54648C21.907 3 19.418 3 14.44 3H13.56C8.58197 3 6.09295 3 4.54648 4.54648ZM6.79999 10.15C6.91798 15.8728 9.92951 19.31 14.8932 19.31H15.1812V16.05C16.989 16.2332 18.3371
-        17.5682 18.8875 19.31H21.4939C20.7869 16.7044 18.9535 15.2604 17.8141 14.71C18.9526 14.0293 20.5641 12.3893 20.9436 10.15H18.5722C18.0747 11.971 16.5945 13.6233 15.1803 13.78V10.15H12.7711V16.5C11.305 16.1337 9.39237 14.3538 9.314 10.15H6.79999Z"
-								fill="white"
-							/>
-						</svg>
-					</div>
-					<div class="VkIdWebSdk__button_text">Войти с VK ID</div>
-				</div>
-			</a>
+<UserModal close={() => dispatch('close')} class="auth-modal">
+	<h2 class="auth-modal__title">{title}</h2>
+
+	{#if mode === 'register' && registerStep === 2}
+		<p class="auth-modal__code-title">Введите код из SMS</p>
+		<NcCodeInput class="auth-modal__code-input" bind:value={dto.code} />
+		<p class="auth-modal__resend">Отправить повторно (00:12)</p>
+	{:else}
+		<div class="auth-modal__field">
+			<label class="auth-modal__label" for="auth-phone">номер телефона</label>
+			<input id="auth-phone" type="tel" class="auth-modal__input" placeholder="+7" bind:value={dto.phone} />
 		</div>
+		<div class="auth-modal__field">
+			<label class="auth-modal__label" for="auth-password">пароль</label>
+			<input
+				id="auth-password"
+				type="password"
+				class="auth-modal__input"
+				placeholder="ваш пароль"
+				bind:value={dto.code}
+			/>
+		</div>
+	{/if}
+
+	<div class="auth-modal__progress">
+		<span></span>
+	</div>
+
+	<Button primary class="auth-modal__button" on:click={onPrimaryClick}>{buttonText}</Button>
+
+	{#if mode === 'login'}
+		<button type="button" class="auth-modal__switch" on:click={switchToRegister}>Регистрация</button>
+	{:else}
+		<button type="button" class="auth-modal__switch" on:click={switchToLogin}>Уже есть аккаунт? Войти</button>
 	{/if}
 </UserModal>
 
 <style>
-	.VkIdWebSdk__button_reset {
-		border: none;
-		margin: 0;
-		padding: 0;
-		width: auto;
-		overflow: visible;
-		background: transparent;
-		color: inherit;
-		font: inherit;
-		line-height: normal;
-		-webkit-font-smoothing: inherit;
-		-moz-osx-font-smoothing: inherit;
-		-webkit-appearance: none;
+	.auth-modal {
+		background: #f3f3f3;
+		border-radius: 56px;
+		width: 580px;
+		max-width: calc(100vw - 32px);
+		padding: 44px 58px;
 	}
 
-	.VkIdWebSdk__button {
-		background: #0077ff;
-		cursor: pointer;
-		transition: all 0.1s ease-out;
+	.auth-modal__title {
+		margin: 0 0 26px;
+		text-align: center;
+		font-size: 42px;
+		line-height: 1;
+		font-weight: 700;
+		color: #1a73e8;
 	}
 
-	.VkIdWebSdk__button:hover {
-		opacity: 0.8;
-	}
-
-	.VkIdWebSdk__button:active {
-		opacity: 0.7;
-		transform: scale(0.97);
-	}
-
-	.VkIdWebSdk__button {
-		border-radius: 8px;
-		/* width: 100%; */
-		width: 207px;
-		min-height: 40px;
-	}
-
-	.VkIdWebSdk__button_container {
-		display: flex;
-		align-items: center;
-		padding: 8px 10px;
-	}
-
-	.VkIdWebSdk__button_icon + .VkIdWebSdk__button_text {
-		margin-left: -28px;
-	}
-
-	.VkIdWebSdk__button_text {
-		display: flex;
-		font-family: -apple-system, system-ui, 'Helvetica Neue', Roboto, sans-serif;
-		flex: 1;
-		justify-content: center;
-		color: #ffffff;
-	}
-
-	.splitter {
+	.auth-modal__field {
 		position: relative;
+		margin-bottom: 20px;
+	}
+
+	.auth-modal__label {
+		position: absolute;
+		left: 26px;
+		top: -9px;
+		padding: 0 12px;
+		font-size: 16px;
+		line-height: 1;
+		background: #f3f3f3;
+		color: #b1b1b1;
+		text-transform: lowercase;
+	}
+
+	.auth-modal__input {
+		width: 100%;
+		height: 62px;
+		padding: 0 38px;
+		border-radius: 36px;
+		border: 1px solid #b6b6b6;
+		background: transparent;
+		font-size: 22px;
+		color: #7f7f87;
+		outline: none;
+	}
+
+	.auth-modal__input::placeholder {
+		color: #b8b8be;
+		font-weight: 600;
+	}
+
+	.auth-modal__code-title {
+		margin: 6px 0 18px;
+		text-align: center;
+		font-size: 30px;
+		line-height: 1.1;
+		font-weight: 600;
+		color: #8a8b94;
+	}
+
+	.auth-modal__resend {
+		margin: 16px 0 18px;
+		text-align: center;
+		font-size: 20px;
+		line-height: 1;
+		color: #a5a7af;
+	}
+
+	:global(.auth-modal__code-input.nc-code-input) {
+		grid-gap: 20px;
+		grid-template-rows: 80px;
+	}
+
+	:global(.auth-modal__code-input.nc-code-input input) {
+		border-radius: 16px;
+		border-color: #b6b6b6;
+		font-size: 30px;
+		background: transparent;
+	}
+
+	.auth-modal__progress {
+		height: 8px;
+		width: 100%;
+		margin: 10px 0 24px;
+		border-radius: 999px;
+		background: #cccccf;
+		overflow: hidden;
+	}
+
+	.auth-modal__progress span {
+		display: block;
+		width: 46%;
+		height: 100%;
+		border-radius: inherit;
+		background: #1a73e8;
+	}
+
+	.auth-modal__button {
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin: 20px 0;
+		width: min(100%, 464px);
+		margin: 0 auto;
+		height: 74px;
+		border-radius: 38px;
+		font-size: 28px;
+		font-weight: 600;
 	}
-	.splitter::before {
-		content: '';
-		height: 1px;
-		background: var(--gray);
-		position: absolute;
-		left: 0;
-		top: 50%;
-		right: 60%;
-	}
-	.splitter::after {
-		content: '';
-		height: 1px;
-		background: var(--gray);
-		position: absolute;
-		left: 60%;
-		top: 50%;
-		right: 0;
+
+	.auth-modal__switch {
+		display: block;
+		margin: 14px auto 0;
+		padding: 0;
+		border: none;
+		background: none;
+		font-size: 16px;
+		color: #6f7078;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 </style>

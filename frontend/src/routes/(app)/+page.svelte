@@ -5,7 +5,6 @@
 	import Feedback from '$lib/components/feedback/Feedback.svelte';
 	import LearningTools from '$lib/components/learningTools/LearningTools.svelte';
 	import Platform from '$lib/components/platform/Platform.svelte';
-	import Team from '$lib/components/team/Team.svelte';
 </script>
 
 <div class="container content">
@@ -13,7 +12,6 @@
 	<About />
 	<Benefit />
 </div>
-<Team />
 <LearningTools />
 <div class="container">
 	<Faq />

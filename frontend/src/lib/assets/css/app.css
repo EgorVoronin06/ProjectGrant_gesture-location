@@ -3,9 +3,9 @@ body {
 	font-family: 'Inter', sans-serif;
 }
 :root {
-	--color-primary: #009de0;
-	--color-primary-transparent: rgba(0, 157, 224, 0.37);
-	--color-primary-lighter: rgba(0, 157, 224, 0.8);
+	--color-primary: #0077FF;
+	--color-primary-transparent: rgba(0, 119, 255, 0.37);
+	--color-primary-lighter: rgba(0, 119, 255, 0.8);
 	--color-dark: #393939;
 	--color-black: #000000;
 	--color-white: #ffffff;

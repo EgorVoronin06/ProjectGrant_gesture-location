@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher<{ auth: void }>();
+
 	const menuItems = [
 		{
 			title: 'О центре',
@@ -6,7 +10,7 @@
 		},
 		{
 			title: 'Алфавит',
-			url: '/#alphabet'
+			url: '/lk/courses#alphabet'
 		},
 		{
 			title: 'Словарь',
@@ -14,11 +18,19 @@
 		},
 		{
 			title: 'Войти',
-			url: '/lk/courses'
+			url: '/lk/courses',
+			openAuth: true
 		}
 	];
 
 	let open = false;
+
+	function handleItemClick(item: (typeof menuItems)[0]) {
+		open = false;
+		if (item.openAuth) {
+			dispatch('auth');
+		}
+	}
 </script>
 
 <header class="header">
@@ -28,9 +40,19 @@
 		</a>
 		<nav class="navbar" class:navbar_active={open}>
 			{#each menuItems as item}
-				<a class="navbar__item" on:click={() => (open = !open)} href={item.url}>
-					{item.title}
-				</a>
+				{#if item.openAuth}
+					<button
+						type="button"
+						class="navbar__item navbar__item--button"
+						on:click={() => handleItemClick(item)}
+					>
+						{item.title}
+					</button>
+				{:else}
+					<a class="navbar__item" on:click={() => (open = !open)} href={item.url}>
+						{item.title}
+					</a>
+				{/if}
 			{/each}
 		</nav>
 		<button
@@ -70,22 +92,103 @@
 	}
 
 	.navbar__item {
-		width: 150px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
-		padding: 5px 20px;
+		min-width: 120px;
+		padding: 8px 24px;
 
-		border-radius: 10px;
+		border-radius: 999px;
 		background: var(--color-grey);
+		color: var(--color-black);
+		font-weight: 500;
+		text-decoration: none;
+		transition:
+			background-color 0.25s ease,
+			color 0.25s ease,
+			box-shadow 0.25s ease,
+			transform 0.25s ease;
 
-		&::hover {
-			opacity: 0.5;
+		&:hover {
+			background-color: #0077ff;
+			color: #ffffff;
+			box-shadow: 0 8px 16px rgba(0, 119, 255, 0.3);
+			transform: translateY(-1px);
 		}
+	}
+
+	.navbar__item--button {
+		border: none;
+		cursor: pointer;
+		font: inherit;
 	}
 
 	.navbar__burger {
 		display: none;
+	}
+
+	/* Первая кнопка в меню – как активная, как на макете */
+	.navbar__item:first-child {
+		background-color: #0077ff;
+		color: #ffffff;
+	}
+
+	/* Ховер для бургер-кнопки (мобильное меню) */
+	.navbar__burger {
+		display: none;
+		width: 40px;
+		height: 40px;
+		border-radius: 999px;
+		border: none;
+		background-color: transparent;
+		display: none;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		cursor: pointer;
+		transition:
+			background-color 0.25s ease,
+			box-shadow 0.25s ease,
+			transform 0.25s ease;
+	}
+
+	.navbar__burger-middle {
+		width: 18px;
+		height: 2px;
+		border-radius: 999px;
+		background-color: #0077ff;
+		position: relative;
+	}
+
+	.navbar__burger-middle::before,
+	.navbar__burger-middle::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		width: 18px;
+		height: 2px;
+		border-radius: 999px;
+		background-color: #0077ff;
+	}
+
+	.navbar__burger-middle::before {
+		top: -6px;
+	}
+
+	.navbar__burger-middle::after {
+		top: 6px;
+	}
+
+	.navbar__burger:hover {
+		background-color: #e3efff;
+		box-shadow: 0 8px 16px rgba(0, 119, 255, 0.25);
+		transform: translateY(-1px);
+	}
+
+	.navbar__burger:hover .navbar__burger-middle,
+	.navbar__burger:hover .navbar__burger-middle::before,
+	.navbar__burger:hover .navbar__burger-middle::after {
+		background-color: #0077ff;
 	}
 </style>

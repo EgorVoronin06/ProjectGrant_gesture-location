@@ -2,7 +2,7 @@
 	import { fade, slide } from 'svelte/transition';
 	import { onDestroy, onMount } from 'svelte';
 
-	let { children, close } = $props();
+let { children, close, class: modalClass = '' } = $props();
 
 	// const dispatch = createEventDispatcher();
 
@@ -23,7 +23,7 @@
 </script>
 
 <div class="shadow" transition:fade={{ duration: 150 }}>
-	<div class="modal">
+	<div class={`modal ${modalClass}`}>
 		<button class="modal__btn" onclick={onClose}>X</button>
 		{@render children()}
 	</div>
@@ -55,27 +55,42 @@
 	}
 	.modal__btn {
 		position: absolute;
-		right: 0;
-		top: 0;
+		right: 18px;
+		top: 18px;
 		z-index: 3;
 
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 50px;
-		height: 50px;
+		width: 36px;
+		height: 36px;
 
-		background-color: var(--color-primary);
-		border-radius: 0 0 0 50%;
-		border: none;
+		background: linear-gradient(135deg, #1a73e8 0%, #3b8cff 100%);
+		color: #ffffff;
+		font-size: 18px;
+		font-weight: 700;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.55);
+		box-shadow: 0 6px 14px rgba(26, 115, 232, 0.35);
 
 		transition: all 0.15s ease-in;
 
 		cursor: pointer;
 		outline: none;
 
+		&:focus-visible {
+			box-shadow:
+				0 0 0 3px rgba(26, 115, 232, 0.25),
+				0 6px 14px rgba(26, 115, 232, 0.35);
+		}
+
 		&:hover {
-			background-color: var(--color-primary-lighter);
+			transform: translateY(-1px);
+			filter: brightness(1.04);
+		}
+
+		&:active {
+			transform: scale(0.96);
 		}
 	}
 </style>
